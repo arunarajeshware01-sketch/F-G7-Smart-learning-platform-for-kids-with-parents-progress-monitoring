@@ -1,0 +1,1 @@
+# F-G7-Smart-learning-platform-for-kids-with-parents-progress-monitoring
