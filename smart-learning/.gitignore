@@ -1,0 +1,30 @@
+# ============================================================
+# Smart Learning — .gitignore
+# ============================================================
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor/IDE folders
+.vscode/
+.idea/
+*.sublime-*
+
+# Uploaded content (videos/materials students & admin upload at runtime)
+# Keep the folders themselves in git, but not what gets uploaded into them.
+backend/uploads/videos/*
+backend/uploads/materials/*
+!backend/uploads/videos/.gitkeep
+!backend/uploads/materials/.gitkeep
+
+# Logs
+*.log
+
+# Local-only DB override (if someone creates a personal copy with a real password)
+backend/config/db.local.php
+
+# Zip exports / backups
+*.zip
+backend/backups/

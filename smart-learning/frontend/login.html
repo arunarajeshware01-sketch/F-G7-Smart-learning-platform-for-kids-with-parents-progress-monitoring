@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log in — Smart Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="js/api.js"></script>
+<style>
+  .auth-shell .blob-a{width:300px;height:300px; background:var(--sky); top:-100px; left:-100px; opacity:.25;}
+  .auth-shell .blob-b{width:260px;height:260px; background:var(--yellow); bottom:-90px; right:-90px; opacity:.3;}
+  .role-icon{font-size:22px; margin-bottom:2px;}
+  .auth-head{margin-bottom:24px;}
+  .auth-head h1{font-size:26px; margin-bottom:6px;}
+  .auth-head p{font-size:14px; color:var(--ink-soft); font-weight:700;}
+  .remember-row{display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; font-size:13px; font-weight:800;}
+  .remember-row label{display:flex; align-items:center; gap:7px; color:var(--ink-soft); cursor:pointer;}
+  .remember-row a{color:var(--sky);}
+  .demo-note{background:var(--paper-soft); border-radius:14px; padding:11px 14px; font-size:12px; font-weight:700; color:var(--ink-soft); margin-top:18px; text-align:center;}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <nav class="site-nav">
+      <a class="logo" href="index.html"><div class="logo-mark">✺</div>Smart Learning</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#subjects">Subjects</a>
+        <a href="student-dashboard.html">Students</a>
+        <a href="parent-dashboard.html">Parents</a>
+        <a href="admin-dashboard.html">Admin</a>
+      </div>
+      <div class="nav-ctas">
+        <a class="btn btn-ghost btn-sm" href="login.html">Log in</a>
+        <a class="btn btn-primary btn-sm" href="register.html">Sign up</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<div class="auth-shell">
+  <div class="blob auth-shell-blob blob-a"></div>
+  <div class="blob auth-shell-blob blob-b"></div>
+
+  <div class="auth-card">
+    <div class="role-tabs" id="roleTabs">
+      <button type="button" class="active" data-role="student"><span class="role-icon">🧒</span>Student</button>
+      <button type="button" data-role="parent"><span class="role-icon">👪</span>Parent</button>
+      <button type="button" data-role="admin"><span class="role-icon">🛠️</span>Admin</button>
+    </div>
+
+    <div class="auth-head">
+      <h1 id="headTitle">Welcome back!</h1>
+      <p id="headSub">Log in to continue today's learning trail.</p>
+    </div>
+
+    <div class="form-msg" id="formMsg">✓ Looks good — taking you to your dashboard…</div>
+
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <div class="field">
+        <label>Email address</label>
+        <input type="email" id="loginEmail" placeholder="you@example.com" required>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" required>
+      </div>
+      <div class="remember-row">
+        <label><input type="checkbox" style="width:auto;"> Remember me</label>
+        <a href="#">Forgot password?</a>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Log in</button>
+    </form>
+
+    <p class="auth-foot">Don't have an account? <a href="register.html">Create one</a></p>
+    <div class="demo-note">Demo only — no real account needed. Submitting takes you straight to the matching dashboard.</div>
+  </div>
+</div>
+
+<footer class="site">
+  <div class="wrap foot-bottom" style="border-top:none; margin-top:0;">
+    <span>© 2026 Smart Learning. A learning platform for Class 1–5.</span>
+    <span>Android · Windows · Web browser</span>
+  </div>
+</footer>
+
+<script>
+  let currentRole = 'student';
+  const roleContent = {
+    student: {title:"Welcome back, learner!", sub:"Log in to continue today's learning trail.", dest:"student-dashboard.html"},
+    parent:  {title:"Welcome back!", sub:"Log in to see your child's latest progress.", dest:"parent-dashboard.html"},
+    admin:   {title:"Administrator sign-in", sub:"Manage students, subjects and content.", dest:"admin-dashboard.html"}
+  };
+  document.querySelectorAll('#roleTabs button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('#roleTabs button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      currentRole = btn.dataset.role;
+      document.getElementById('headTitle').textContent = roleContent[currentRole].title;
+      document.getElementById('headSub').textContent = roleContent[currentRole].sub;
+    });
+  });
+  async function handleLogin(e){
+    e.preventDefault();
+    const msg = document.getElementById('formMsg');
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    const result = await apiPost('login.php', { role: currentRole, email, password });
+
+    if (result.success) {
+      msg.textContent = '✓ ' + result.message + ' Redirecting…';
+      msg.classList.add('show');
+      setTimeout(()=>{ window.location.href = roleContent[currentRole].dest; }, 500);
+    } else {
+      msg.textContent = '✗ ' + result.message;
+      msg.style.background = '#ffe3e3';
+      msg.style.color = '#a30000';
+      msg.classList.add('show');
+    }
+  }
+</script>
+
+</body>
+</html>

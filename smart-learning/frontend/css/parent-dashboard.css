@@ -1,0 +1,30 @@
+.child-switch{display:flex; gap:10px; margin-bottom:24px; flex-wrap:wrap;}
+  .child-chip{display:flex; align-items:center; gap:10px; padding:9px 16px 9px 9px; border-radius:999px; border:2px solid var(--line); background:white; cursor:pointer; font-weight:800; font-size:13.5px;}
+  .child-chip.active{border-color:var(--ink); background:var(--ink); color:white;}
+  .child-chip .av{width:28px;height:28px;border-radius:9px; background:var(--sky); display:flex;align-items:center;justify-content:center; font-size:14px;}
+  .child-chip.active .av{background:rgba(255,255,255,0.2);}
+
+  .stat-card.c1{background:#EAF8FD;} .stat-card.c2{background:#FFF6DE;} .stat-card.c3{background:#E9F8F0;} .stat-card.c4{background:#F2ECFF;}
+
+  .two-col{display:grid; grid-template-columns:1.4fr 1fr; gap:22px;}
+  @media(max-width:980px){ .two-col{grid-template-columns:1fr;} }
+
+  .seg{display:flex; background:var(--paper-soft); border-radius:999px; padding:3px; font-size:12px; font-weight:800; cursor:pointer;}
+  .seg span{padding:6px 14px; border-radius:999px; color:var(--ink-soft);}
+  .seg span.active{background:var(--ink); color:white;}
+  .chart-row{display:flex; align-items:flex-end; gap:12px; height:150px; margin:10px 4px 26px;}
+  .chart-col{flex:1; border-radius:8px 8px 4px 4px; position:relative; background:#EAF8FD;}
+  .chart-col span{position:absolute; bottom:-22px; left:0; right:0; text-align:center; font-size:11px; font-weight:800; color:var(--ink-soft);}
+  .chart-col .val{position:absolute; top:-20px; left:0; right:0; text-align:center; font-size:11px; font-weight:800; color:var(--ink-soft);}
+
+  .subj-prog{display:flex; align-items:center; gap:12px; padding:12px 4px; border-bottom:1px solid var(--line);}
+  .subj-prog:last-child{border-bottom:none;}
+  .subj-prog .ic{width:36px;height:36px;border-radius:11px; display:flex;align-items:center;justify-content:center; font-size:16px; flex-shrink:0;}
+  .subj-prog .lbl{font-size:13.5px; font-weight:800; width:100px; flex-shrink:0;}
+  .subj-prog .pct{font-size:12px; font-weight:800; color:var(--ink-soft); width:38px; text-align:right;}
+
+  .notif-item{display:flex; gap:12px; align-items:flex-start; padding:13px 4px; border-bottom:1px solid var(--line);}
+  .notif-item:last-child{border-bottom:none;}
+  .notif-dot{width:36px;height:36px;border-radius:11px; display:flex;align-items:center;justify-content:center; font-size:16px; flex-shrink:0;}
+  .notif-item h5{font-size:13.5px; margin-bottom:2px;}
+  .notif-item span{font-size:11.5px; color:var(--ink-soft); font-weight:700;}

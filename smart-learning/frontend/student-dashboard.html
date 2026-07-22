@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Dashboard — Smart Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="css/student-dashboard.css">
+<script src="js/api.js"></script>
+</head>
+<body>
+
+<div class="dash-shell">
+  <aside class="sidebar" id="sidebar">
+    <a class="logo" href="index.html"><div class="logo-mark">✺</div>Smart Learning</a>
+
+    <div class="side-section">
+      <div class="side-label">Learn</div>
+      <a class="side-link active" href="#"><span class="ic">🏠</span>Dashboard</a>
+      <a class="side-link" href="#lessons"><span class="ic">🎬</span>Lessons</a>
+      <a class="side-link" href="#allQuizzes"><span class="ic">📝</span>Quizzes</a>
+      <a class="side-link" href="#progress"><span class="ic">📈</span>My Progress</a>
+      <a class="side-link" href="#badges"><span class="ic">🏅</span>Rewards</a>
+    </div>
+    <div class="side-section">
+      <div class="side-label">Account</div>
+      <a class="side-link" href="#"><span class="ic">🙂</span>Profile</a>
+      <a class="side-link" href="index.html"><span class="ic">↩️</span>Back to site</a>
+    </div>
+
+    <div class="sidebar-foot">
+      <div class="side-user">
+        <div class="avatar">🦊</div>
+        <div><div class="nm" id="sideName">Loading…</div><div class="rl" id="sideClass">Student</div></div>
+      </div>
+      <a href="login.html" class="side-link" style="margin-top:6px;"><span class="ic">🚪</span>Log out</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <h1 id="greetingH1">Hi there! 👋</h1>
+        <div class="sub">Wednesday, 20 July — let's keep the trail going.</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <div style="position:relative;">
+          <button id="notifBellBtn" class="btn btn-ghost btn-sm" style="position:relative;" onclick="toggleNotifPanel()">
+            🔔 Notifications
+            <span id="notifBadge" style="display:none; position:absolute; top:-6px; right:-6px; background:#B0332D; color:white; font-size:10.5px; font-weight:800; border-radius:999px; padding:2px 6px; min-width:16px; text-align:center;">0</span>
+          </button>
+          <div id="notifPanel" class="panel" style="display:none; position:absolute; right:0; top:calc(100% + 8px); width:320px; max-height:380px; overflow-y:auto; z-index:1000; box-shadow:0 12px 32px rgba(0,0,0,.14); padding:16px;">
+            <div class="panel-head" style="margin-bottom:10px;">
+              <h3 style="font-size:15px;">Notifications</h3>
+              <a href="#" class="tag-pill badge-blue" onclick="markAllNotifsRead(); return false;">Mark all read</a>
+            </div>
+            <div id="notifList"><span style="color:var(--ink-soft); font-weight:700;">Loading…</span></div>
+          </div>
+        </div>
+        <a href="parent-dashboard.html" class="btn btn-ghost btn-sm">View as parent</a>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="welcome-card">
+        <div style="display:flex; align-items:center; gap:16px;">
+          <div class="welcome-avatar">🦊</div>
+          <div>
+            <h2>2 of 3 lessons done today</h2>
+            <p>One more lesson keeps your 5-day streak alive 🔥</p>
+          </div>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <div class="goal-chip"><div class="n">5</div><div class="l">Day streak</div></div>
+          <div class="goal-chip"><div class="n">67%</div><div class="l">Daily goal</div></div>
+          <div class="goal-chip"><div class="n">12</div><div class="l">Badges</div></div>
+        </div>
+      </div>
+
+      <div class="subj-grid" id="lessons">
+        <div class="subj-card" data-subject="English" onclick="openSubject(this)" style="background:#EAF8FD; cursor:pointer;">
+          <div class="ic">📖</div><h4>English</h4><div class="meta" data-field="meta">Getting started</div>
+          <div class="bar-track"><div class="bar-fill" data-field="bar" style="width:0%; background:var(--sky);"></div></div>
+          <div class="pct-lbl" data-field="pct">0 lessons completed</div>
+        </div>
+        <div class="subj-card" data-subject="Mathematics" onclick="openSubject(this)" style="background:#FFF6DE; cursor:pointer;">
+          <div class="ic">➗</div><h4>Mathematics</h4><div class="meta" data-field="meta">Getting started</div>
+          <div class="bar-track"><div class="bar-fill" data-field="bar" style="width:0%; background:var(--yellow);"></div></div>
+          <div class="pct-lbl" data-field="pct">0 lessons completed</div>
+        </div>
+        <div class="subj-card" data-subject="Environmental Studies (EVS)" onclick="openSubject(this)" style="background:#E9F8F0; cursor:pointer;">
+          <div class="ic">🌍</div><h4>EVS</h4><div class="meta" data-field="meta">Getting started</div>
+          <div class="bar-track"><div class="bar-fill" data-field="bar" style="width:0%; background:var(--leaf);"></div></div>
+          <div class="pct-lbl" data-field="pct">0 lessons completed</div>
+        </div>
+        <div class="subj-card" data-subject="Basic Computer Knowledge" onclick="openSubject(this)" style="background:#F2ECFF; cursor:pointer;">
+          <div class="ic">💻</div><h4>Computer</h4><div class="meta" data-field="meta">Getting started</div>
+          <div class="bar-track"><div class="bar-fill" data-field="bar" style="width:0%; background:var(--violet);"></div></div>
+          <div class="pct-lbl" data-field="pct">0 lessons completed</div>
+        </div>
+      </div>
+
+      <div class="panel" id="subjectContentPanel" style="display:none; margin-top:20px;">
+        <div class="panel-head"><h3 id="subjectContentTitle">Subject</h3>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('subjectContentPanel').style.display='none'">Close</button>
+        </div>
+        <div id="subjectContentBody">Loading…</div>
+      </div>
+
+      <div class="panel" id="allQuizzes">
+        <div class="panel-head"><h3>📝 Quizzes</h3><a href="#" class="tag-pill badge-blue" id="quizCountTag">Loading…</a></div>
+        <div id="allQuizzesList"><span style="color:var(--ink-soft); font-weight:700;">Loading…</span></div>
+      </div>
+
+      <div class="two-col">
+        <div class="panel" id="continueQueuePanel">
+          <div class="panel-head"><h3>Continue where you left off</h3><a href="#" class="tag-pill badge-blue" id="queueCountTag">Loading…</a></div>
+          <div id="continueQueueList"><span style="color:var(--ink-soft); font-weight:700;">Loading…</span></div>
+        </div>
+
+        <div class="panel" id="badges">
+          <div class="panel-head"><h3>Rewards earned</h3></div>
+          <div class="badge-grid">
+            <div class="badge-item"><div class="em">🔥</div><span>5-Day Streak</span></div>
+            <div class="badge-item"><div class="em">📖</div><span>Bookworm</span></div>
+            <div class="badge-item"><div class="em">💯</div><span>Perfect Quiz</span></div>
+            <div class="badge-item"><div class="em">🌍</div><span>EVS Explorer</span></div>
+            <div class="badge-item locked"><div class="em">🧮</div><span>Maths Whiz</span></div>
+            <div class="badge-item locked"><div class="em">💻</div><span>Tech Starter</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="progress">
+        <div class="panel-head"><h3>Recent quiz scores</h3></div>
+        <table>
+          <thead><tr><th>Quiz</th><th>Subject</th><th>Date</th><th>Score</th></tr></thead>
+          <tbody id="quizScoresBody">
+            <tr><td colspan="4" style="text-align:center; color:var(--ink-soft);">No quizzes attempted yet.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="quiz-overlay" id="quizOverlay">
+  <div class="quiz-card" id="quizCard">
+    <!-- Filled dynamically by renderQuizQuestion() / renderQuizResult() -->
+  </div>
+</div>
+
+<script src="js/student-dashboard.js"></script>
+</body>
+</html>

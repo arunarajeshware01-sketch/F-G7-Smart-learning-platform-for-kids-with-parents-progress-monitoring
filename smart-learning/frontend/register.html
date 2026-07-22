@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create an account — Smart Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="js/api.js"></script>
+<style>
+  .auth-shell{align-items:flex-start; padding-top:50px;}
+  .auth-card{max-width:520px;}
+  .auth-shell .blob-a{width:300px;height:300px; background:var(--leaf); top:-100px; right:-120px; opacity:.2;}
+  .auth-shell .blob-b{width:240px;height:240px; background:var(--coral); bottom:-80px; left:-100px; opacity:.22;}
+  .role-icon{font-size:22px; margin-bottom:2px;}
+  .auth-head{margin-bottom:24px;}
+  .auth-head h1{font-size:26px; margin-bottom:6px;}
+  .auth-head p{font-size:14px; color:var(--ink-soft); font-weight:700;}
+  .panel-group{display:none;}
+  .panel-group.active{display:block;}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <nav class="site-nav">
+      <a class="logo" href="index.html"><div class="logo-mark">✺</div>Smart Learning</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#subjects">Subjects</a>
+        <a href="student-dashboard.html">Students</a>
+        <a href="parent-dashboard.html">Parents</a>
+        <a href="admin-dashboard.html">Admin</a>
+      </div>
+      <div class="nav-ctas">
+        <a class="btn btn-ghost btn-sm" href="login.html">Log in</a>
+        <a class="btn btn-primary btn-sm" href="register.html">Sign up</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<div class="auth-shell">
+  <div class="blob auth-shell-blob blob-a"></div>
+  <div class="blob auth-shell-blob blob-b"></div>
+
+  <div class="auth-card">
+    <div class="role-tabs" id="roleTabs">
+      <button type="button" class="active" data-role="student"><span class="role-icon">🧒</span>I'm a Student</button>
+      <button type="button" data-role="parent"><span class="role-icon">👪</span>I'm a Parent</button>
+    </div>
+
+    <div class="form-msg" id="formMsg">✓ Account created — taking you to your dashboard…</div>
+
+    <!-- STUDENT REGISTRATION — FR1 -->
+    <div class="panel-group active" id="panel-student">
+      <div class="auth-head">
+        <h1>Create a student account</h1>
+        <p>Just a few details to build a learning trail that fits.</p>
+      </div>
+      <form id="studentForm" onsubmit="handleStudentRegister(event)">
+        <div class="field"><label>Full name</label><input type="text" id="stuName" placeholder="e.g. Aarav Sharma" required></div>
+        <div class="field-row">
+          <div class="field"><label>Age</label><input type="number" id="stuAge" min="6" max="11" placeholder="8" required></div>
+          <div class="field"><label>Class</label>
+            <select id="stuClass" required>
+              <option value="">Select class</option>
+            </select>
+          </div>
+        </div>
+        <div class="field"><label>Student login email</label><input type="email" id="stuEmail" placeholder="e.g. aarav@example.com" required></div>
+        <div class="field"><label>Parent mobile number</label><input type="tel" id="stuParentMobile" placeholder="+91 98765 43210" required></div>
+        <div class="field"><label>Parent email</label><input type="email" id="stuParentEmail" placeholder="parent@example.com" required></div>
+        <div class="field"><label>Password</label><input type="password" id="stuPassword" placeholder="Create a password" required></div>
+        <button type="submit" class="btn btn-primary btn-block">Create student account</button>
+      </form>
+    </div>
+
+    <!-- PARENT REGISTRATION — FR2 -->
+    <div class="panel-group" id="panel-parent">
+      <div class="auth-head">
+        <h1>Create a parent account</h1>
+        <p>Register, then link your child's profile to start monitoring.</p>
+      </div>
+      <form id="parentForm" onsubmit="handleParentRegister(event)">
+        <div class="field"><label>Full name</label><input type="text" id="parName" placeholder="e.g. Priya Sharma" required></div>
+        <div class="field"><label>Mobile number</label><input type="tel" id="parMobile" placeholder="+91 98765 43210" required></div>
+        <div class="field"><label>Email address</label><input type="email" id="parEmail" placeholder="you@example.com" required></div>
+        <div class="field"><label>Password</label><input type="password" id="parPassword" placeholder="Create a password" required></div>
+        <button type="submit" class="btn btn-primary btn-block">Create parent account</button>
+      </form>
+    </div>
+
+    <p class="auth-foot">Already have an account? <a href="login.html">Log in</a></p>
+  </div>
+</div>
+
+<footer class="site">
+  <div class="wrap foot-bottom" style="border-top:none; margin-top:0;">
+    <span>© 2026 Smart Learning. A learning platform for Class 1–5.</span>
+    <span>Android · Windows · Web browser</span>
+  </div>
+</footer>
+
+<script>
+  (async function loadClassOptions(){
+    const res = await apiGet('classes.php');
+    if (!res.success) return;
+    const sel = document.getElementById('stuClass');
+    sel.innerHTML = '<option value="">Select class</option>' +
+      res.classes.map(c => `<option>${c}</option>`).join('');
+  })();
+
+  document.querySelectorAll('#roleTabs button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('#roleTabs button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.panel-group').forEach(p=>p.classList.remove('active'));
+      document.getElementById('panel-'+btn.dataset.role).classList.add('active');
+    });
+  });
+  function showMsg(text, ok){
+    const msg = document.getElementById('formMsg');
+    msg.textContent = (ok ? '✓ ' : '✗ ') + text;
+    msg.style.background = ok ? '' : '#ffe3e3';
+    msg.style.color = ok ? '' : '#a30000';
+    msg.classList.add('show');
+  }
+
+  async function handleStudentRegister(e){
+    e.preventDefault();
+    const payload = {
+      name: document.getElementById('stuName').value.trim(),
+      age: document.getElementById('stuAge').value,
+      class: document.getElementById('stuClass').value,
+      email: document.getElementById('stuEmail').value.trim(),
+      parent_mobile: document.getElementById('stuParentMobile').value.trim(),
+      parent_email: document.getElementById('stuParentEmail').value.trim(),
+      password: document.getElementById('stuPassword').value,
+    };
+    const result = await apiPost('register_student.php', payload);
+    showMsg(result.message, result.success);
+    if (result.success) setTimeout(()=>{ window.location.href = 'login.html'; }, 900);
+  }
+
+  async function handleParentRegister(e){
+    e.preventDefault();
+    const payload = {
+      name: document.getElementById('parName').value.trim(),
+      mobile: document.getElementById('parMobile').value.trim(),
+      email: document.getElementById('parEmail').value.trim(),
+      password: document.getElementById('parPassword').value,
+    };
+    const result = await apiPost('register_parent.php', payload);
+    showMsg(result.message, result.success);
+    if (result.success) setTimeout(()=>{ window.location.href = 'login.html'; }, 900);
+  }
+</script>
+
+</body>
+</html>

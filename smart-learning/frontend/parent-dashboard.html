@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parent Dashboard — Smart Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="css/parent-dashboard.css">
+<script src="js/api.js"></script>
+</head>
+<body>
+
+<div class="dash-shell">
+  <aside class="sidebar" id="sidebar">
+    <a class="logo" href="index.html"><div class="logo-mark">✺</div>Smart Learning</a>
+
+    <div class="side-section">
+      <div class="side-label">Monitor</div>
+      <a class="side-link active" href="#"><span class="ic">🏠</span>Overview</a>
+      <a class="side-link" href="#progress"><span class="ic">📊</span>Subject Progress</a>
+      <a class="side-link" href="#quizzes"><span class="ic">📝</span>Quiz Results</a>
+      <a class="side-link" href="#notifications"><span class="ic">🔔</span>Notifications</a>
+    </div>
+    <div class="side-section">
+      <div class="side-label">Account</div>
+      <a class="side-link" href="#"><span class="ic">👪</span>Linked Children</a>
+      <a class="side-link" href="#"><span class="ic">⚙️</span>Settings</a>
+      <a class="side-link" href="index.html"><span class="ic">↩️</span>Back to site</a>
+    </div>
+
+    <div class="sidebar-foot">
+      <div class="side-user">
+        <div class="avatar" style="background:var(--coral);">👩</div>
+        <div><div class="nm" id="parentName">Parent</div><div class="rl">Parent</div></div>
+      </div>
+      <a href="login.html" class="side-link" style="margin-top:6px;"><span class="ic">🚪</span>Log out</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <h1>Family overview</h1>
+        <div class="sub" id="familySub">Loading…</div>
+      </div>
+      <a href="student-dashboard.html" class="btn btn-ghost btn-sm">View as student</a>
+    </div>
+
+    <div class="content">
+
+      <div class="child-switch" id="childSwitch">
+        <span style="color:var(--ink-soft); font-weight:700;">Loading children…</span>
+      </div>
+
+      <div id="linkChildForm" style="display:none; background:var(--paper-soft); border-radius:14px; padding:16px; margin-bottom:20px;">
+        <div class="field"><label>Child's login email (the email they registered with)</label><input type="email" id="linkChildEmail"></div>
+        <button class="btn btn-primary btn-sm" onclick="linkChild()">Link child</button>
+        <span id="linkChildMsg" style="margin-left:10px; font-weight:700; font-size:13px;"></span>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card card c1"><div class="ic">⏱️</div><div class="num" id="statMinutes">–</div><div class="lbl">Learning time (all-time)</div></div>
+        <div class="stat-card card c2"><div class="ic">📝</div><div class="num" id="statQuizCount">–</div><div class="lbl">Quizzes attempted</div></div>
+        <div class="stat-card card c3"><div class="ic">🎯</div><div class="num" id="statAvgScore">–</div><div class="lbl">Avg. quiz score</div></div>
+        <div class="stat-card card c4"><div class="ic">📚</div><div class="num" id="statLessons">–</div><div class="lbl">Lessons completed</div></div>
+      </div>
+
+      <div class="two-col">
+        <div class="panel">
+          <div class="panel-head">
+            <h3>Learning activity</h3>
+            <div class="seg" id="activitySeg">
+              <span class="active" data-range="week" onclick="setActivityRange('week')">Week</span>
+              <span data-range="month" onclick="setActivityRange('month')">Month</span>
+            </div>
+          </div>
+          <div class="chart-row" id="activityChartRow">
+            <span style="color:var(--ink-soft); font-weight:700;">Loading…</span>
+          </div>
+        </div>
+
+        <div class="panel" id="progress">
+          <div class="panel-head"><h3>Subject-wise progress</h3></div>
+          <div id="subjectProgressList"><span style="color:var(--ink-soft); font-weight:700;">Loading…</span></div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="panel" id="quizzes">
+          <div class="panel-head"><h3>Quiz results</h3></div>
+          <table>
+            <thead><tr><th>Quiz</th><th>Subject</th><th>Date</th><th>Score</th></tr></thead>
+            <tbody id="parentQuizBody">
+              <tr><td colspan="4" style="text-align:center; color:var(--ink-soft);">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="panel" id="notifications">
+          <div class="panel-head"><h3>Notifications</h3></div>
+          <div id="parentNotifList"><span style="color:var(--ink-soft); font-weight:700;">Loading…</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="js/parent-dashboard.js"></script>
+</body>
+</html>

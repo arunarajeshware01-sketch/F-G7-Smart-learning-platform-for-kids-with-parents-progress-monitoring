@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Console — Smart Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="css/admin-dashboard.css">
+<script src="js/api.js"></script>
+</head>
+<body>
+
+<div class="dash-shell">
+  <aside class="sidebar" id="sidebar">
+    <a class="logo" href="index.html"><div class="logo-mark">✺</div>Smart Learning</a>
+
+    <div class="side-section">
+      <div class="side-label">Manage</div>
+      <a class="side-link active" href="#"><span class="ic">🏠</span>Overview</a>
+      <a class="side-link" href="#students"><span class="ic">🧒</span>Students</a>
+      <a class="side-link" href="#parents"><span class="ic">👪</span>Parents</a>
+      <a class="side-link" href="#subjects"><span class="ic">📚</span>Subjects</a>
+      <a class="side-link" href="#classes"><span class="ic">🏫</span>Classes</a>
+    </div>
+    <div class="side-section">
+      <div class="side-label">Content</div>
+      <a class="side-link" href="#content"><span class="ic">🎬</span>Upload Videos</a>
+      <a class="side-link" href="#content"><span class="ic">📄</span>Study Material</a>
+      <a class="side-link" href="#quizbuilder"><span class="ic">📝</span>Create Quizzes</a>
+      <a class="side-link" href="#managequizzes"><span class="ic">📋</span>Manage Quizzes</a>
+    </div>
+    <div class="side-section">
+      <div class="side-label">System</div>
+      <a class="side-link" href="#reports"><span class="ic">📊</span>Reports</a>
+      <a class="side-link" href="#notify"><span class="ic">🔔</span>Notifications</a>
+      <a class="side-link" href="#backup"><span class="ic">💾</span>Backup Database</a>
+    </div>
+
+    <div class="sidebar-foot">
+      <div class="side-user">
+        <div class="avatar" style="background:var(--violet);">🛠️</div>
+        <div><div class="nm" id="adminName">Admin</div><div class="rl">Administrator</div></div>
+      </div>
+      <a href="login.html" class="side-link" style="margin-top:6px;"><span class="ic">🚪</span>Log out</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <h1>Platform overview</h1>
+        <div class="sub">All systems normal · last backup 3 hours ago</div>
+      </div>
+      <a href="index.html" class="btn btn-ghost btn-sm">Back to site</a>
+    </div>
+
+    <div class="content">
+
+      <div class="stat-grid">
+        <div class="stat-card card c1"><div class="ic">🧒</div><div class="num" id="statStudents">–</div><div class="lbl">Registered students</div></div>
+        <div class="stat-card card c2"><div class="ic">👪</div><div class="num" id="statParents">–</div><div class="lbl">Registered parents</div></div>
+        <div class="stat-card card c3"><div class="ic">📚</div><div class="num" id="statSubjects">4</div><div class="lbl">Active subjects</div></div>
+        <div class="stat-card card c4"><div class="ic">📝</div><div class="num" id="statQuizzes">–</div><div class="lbl">Quizzes published</div></div>
+      </div>
+
+      <div class="quick-grid">
+        <div class="quick-card" onclick="jumpToPanel('content', 'videoTitle')"><div class="ic" style="background:#EAF8FD;">🎬</div><h4>Upload a video lesson</h4><p>Add new animated or recorded content to a subject.</p></div>
+        <div class="quick-card" onclick="jumpToPanel('quizbuilder', 'quizTitle')"><div class="ic" style="background:#FFF6DE;">📝</div><h4>Create a quiz</h4><p>Build a new practice quiz for any class and subject.</p></div>
+        <div class="quick-card" onclick="jumpToPanel('content', 'notifyMessage')"><div class="ic" style="background:#E9F8F0;">🔔</div><h4>Send a notification</h4><p>Notify parents about reports, updates or reminders.</p></div>
+      </div>
+
+      <div class="panel" id="students">
+        <div class="panel-head"><h3>Manage students</h3><button class="btn btn-primary btn-sm" onclick="toggleAddStudentForm()">+ Add student</button></div>
+
+        <div id="addStudentForm" style="display:none; background:var(--paper-soft); border-radius:14px; padding:16px; margin-bottom:16px;">
+          <div class="field-row" style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+            <div class="field"><label>Full name</label><input type="text" id="newStuName"></div>
+            <div class="field"><label>Login email</label><input type="email" id="newStuEmail"></div>
+            <div class="field"><label>Age</label><input type="number" id="newStuAge" min="6" max="11"></div>
+            <div class="field"><label>Class</label>
+              <select id="newStuClass"></select>
+            </div>
+            <div class="field"><label>Parent mobile</label><input type="tel" id="newStuParentMobile"></div>
+            <div class="field"><label>Parent email</label><input type="email" id="newStuParentEmail"></div>
+            <div class="field"><label>Temp password</label><input type="text" id="newStuPassword" placeholder="e.g. Welcome@123"></div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="createStudent()">Save student</button>
+          <span id="addStudentMsg" style="margin-left:10px; font-weight:700; font-size:13px;"></span>
+        </div>
+
+        <div class="toolbar">
+          <div class="tabs-row" id="classFilterTabs">
+            <button class="active" data-class="all">All classes</button>
+          </div>
+          <div class="search-box">🔍 <input type="text" id="studentSearch" placeholder="Search students…"></div>
+        </div>
+        <table>
+          <thead><tr><th>Student</th><th>Class</th><th>Login email</th><th>Parent email</th><th></th></tr></thead>
+          <tbody id="studentsBody">
+            <tr><td colspan="5" style="text-align:center; color:var(--ink-soft);">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel" id="parents" style="margin-top:22px;">
+        <div class="panel-head"><h3>Manage parents</h3></div>
+        <div class="toolbar">
+          <div class="search-box">🔍 <input type="text" id="parentSearch" placeholder="Search parents…"></div>
+        </div>
+        <table>
+          <thead><tr><th>Parent</th><th>Mobile</th><th>Email</th><th>Linked children</th><th></th></tr></thead>
+          <tbody id="parentsBody">
+            <tr><td colspan="5" style="text-align:center; color:var(--ink-soft);">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel" id="subjects" style="margin-top:22px;">
+        <div class="panel-head"><h3>Manage subjects</h3></div>
+
+        <div style="display:flex; gap:10px; align-items:flex-end; margin-bottom:18px; flex-wrap:wrap;">
+          <div class="field" style="margin-bottom:0; flex:1; min-width:220px;"><label>New subject name</label><input type="text" id="newSubjectName" placeholder="e.g. Art &amp; Craft"></div>
+          <button class="btn btn-primary btn-sm" onclick="createSubject()">+ Add subject</button>
+        </div>
+        <span id="subjectAddMsg" style="display:block; margin-bottom:12px; font-weight:700; font-size:13px;"></span>
+
+        <table>
+          <thead><tr><th>Subject</th><th>Videos</th><th>Lessons</th><th>Quizzes</th><th></th></tr></thead>
+          <tbody id="subjectsBody">
+            <tr><td colspan="5" style="text-align:center; color:var(--ink-soft);">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel" id="classes" style="margin-top:22px;">
+        <div class="panel-head"><h3>Manage classes</h3></div>
+
+        <div style="display:flex; gap:10px; align-items:flex-end; margin-bottom:18px; flex-wrap:wrap;">
+          <div class="field" style="margin-bottom:0; flex:1; min-width:220px;"><label>New class name</label><input type="text" id="newClassName" placeholder="e.g. Class 6"></div>
+          <button class="btn btn-primary btn-sm" onclick="createClass()">+ Add class</button>
+        </div>
+        <span id="classAddMsg" style="display:block; margin-bottom:12px; font-weight:700; font-size:13px;"></span>
+
+        <table>
+          <thead><tr><th>Class</th><th>Students</th><th>Content items</th><th></th></tr></thead>
+          <tbody id="classesBody">
+            <tr><td colspan="4" style="text-align:center; color:var(--ink-soft);">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel" id="managecontent" style="margin-top:22px;">
+        <div class="panel-head"><h3>Manage published content</h3></div>
+
+        <h4 style="margin-bottom:8px;">🎬 Videos</h4>
+        <table>
+          <thead><tr><th>Title</th><th>Subject</th><th>Class</th><th></th></tr></thead>
+          <tbody id="videosListBody"><tr><td colspan="4" style="text-align:center; color:var(--ink-soft);">Loading…</td></tr></tbody>
+        </table>
+
+        <h4 style="margin:20px 0 8px;">📘 Lessons / study material</h4>
+        <table>
+          <thead><tr><th>Title</th><th>Subject</th><th>Class</th><th></th></tr></thead>
+          <tbody id="lessonsListBody"><tr><td colspan="4" style="text-align:center; color:var(--ink-soft);">Loading…</td></tr></tbody>
+        </table>
+      </div>
+
+      <div class="two-col" style="display:grid; grid-template-columns:1.3fr 1fr; gap:22px;">
+        <div class="panel" id="content">
+          <div class="panel-head"><h3>Upload a video lesson</h3></div>
+          <div class="field-row" style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+            <div class="field" style="margin-bottom:0;"><label>Subject</label><select id="videoSubject"></select></div>
+            <div class="field" style="margin-bottom:0;"><label>Class</label>
+              <select id="videoClass"></select>
+            </div>
+          </div>
+          <div class="field"><label>Title</label><input type="text" id="videoTitle" placeholder="e.g. The Alphabet Song"></div>
+          <div class="field"><label>Video file (MP4/WebM/MOV)</label><input type="file" id="videoFile" accept="video/mp4,video/webm,video/quicktime"></div>
+          <button class="btn btn-primary btn-block" onclick="uploadVideo()">Publish video</button>
+          <span id="videoMsg" style="display:block; margin-top:8px; font-weight:700; font-size:13px;"></span>
+
+          <hr style="margin:22px 0; border:none; border-top:1px solid var(--line);">
+
+          <div class="panel-head"><h3>Add study material / lesson</h3></div>
+          <div class="field-row" style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+            <div class="field" style="margin-bottom:0;"><label>Subject</label><select id="lessonSubject"></select></div>
+            <div class="field" style="margin-bottom:0;"><label>Class</label>
+              <select id="lessonClass"></select>
+            </div>
+          </div>
+          <div class="field"><label>Title</label><input type="text" id="lessonTitle" placeholder="e.g. Rhyming Words & Sounds"></div>
+          <div class="field"><label>Description</label><input type="text" id="lessonDesc" placeholder="Short description"></div>
+          <div class="field"><label>Link/URL (PDF, doc, external resource)</label><input type="text" id="lessonUrl" placeholder="https://…"></div>
+          <button class="btn btn-primary btn-block" onclick="addLesson()">Publish material</button>
+          <span id="lessonMsg" style="display:block; margin-top:8px; font-weight:700; font-size:13px;"></span>
+
+          <hr style="margin:22px 0; border:none; border-top:1px solid var(--line);">
+
+          <div class="panel-head"><h3>Send a notification</h3></div>
+          <div class="field"><label>Send to</label>
+            <select id="notifyTarget"><option value="all_parents">All parents</option><option value="all_students">All students</option></select>
+          </div>
+          <div class="field"><label>Message</label><input type="text" id="notifyMessage" placeholder="e.g. Weekly reports are now available"></div>
+          <button class="btn btn-primary btn-block" onclick="sendNotification()">Send notification</button>
+          <span id="notifyMsg" style="display:block; margin-top:8px; font-weight:700; font-size:13px;"></span>
+        </div>
+
+        <div class="panel" id="backup">
+          <div class="panel-head"><h3>System status</h3></div>
+          <div class="notif" style="margin-top:0;"><div class="dotc" style="background:var(--sky);"></div><div><p style="font-size:13px; font-weight:700;" id="statusStudents">Loading students…</p></div></div>
+          <div class="notif"><div class="dotc" style="background:var(--leaf);"></div><div><p style="font-size:13px; font-weight:700;" id="statusQuizAvg">Loading quiz average…</p></div></div>
+          <button class="btn btn-ghost btn-block" style="margin-top:16px;" onclick="runBackup()">Run backup now</button>
+          <span id="backupMsg" style="display:block; margin-top:8px; font-weight:700; font-size:13px;"></span>
+        </div>
+      </div>
+
+      <div class="panel" id="quizbuilder" style="margin-top:22px;">
+        <div class="panel-head"><h3 id="quizBuilderHeading">Create a quiz</h3></div>
+        <div class="field-row" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px;">
+          <div class="field" style="margin-bottom:0;"><label>Subject</label><select id="quizSubject"></select></div>
+          <div class="field" style="margin-bottom:0;"><label>Class</label>
+            <select id="quizClass"></select>
+          </div>
+          <div class="field" style="margin-bottom:0;"><label>Quiz title</label><input type="text" id="quizTitle" placeholder="e.g. Addition & Subtraction"></div>
+        </div>
+        <div id="quizQuestions"></div>
+        <button class="btn btn-ghost btn-sm" onclick="addQuestionRow()" style="margin:10px 0;">+ Add question</button><br>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <button class="btn btn-primary btn-block" id="quizSaveBtn" onclick="saveQuiz()">Save quiz</button>
+          <button class="btn btn-ghost btn-sm" id="quizCancelEditBtn" style="display:none; white-space:nowrap;" onclick="cancelQuizEdit()">Cancel edit</button>
+        </div>
+        <span id="quizMsg" style="display:block; margin-top:8px; font-weight:700; font-size:13px;"></span>
+      </div>
+
+      <div class="panel" id="managequizzes" style="margin-top:22px;">
+        <div class="panel-head"><h3>Manage quizzes</h3></div>
+        <table>
+          <thead><tr><th>Title</th><th>Subject</th><th>Class</th><th>Questions</th><th>Attempts</th><th></th></tr></thead>
+          <tbody id="quizzesListBody">
+            <tr><td colspan="6" style="text-align:center; color:var(--ink-soft);">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="editModal" style="display:none; position:fixed; inset:0; background:rgba(20,15,40,0.45); z-index:1000; align-items:center; justify-content:center;">
+  <div style="background:#fff; border-radius:16px; padding:24px; width:420px; max-width:90vw;">
+    <h3 id="editModalTitle" style="margin-bottom:14px;">Edit</h3>
+    <div class="field"><label>Subject</label><select id="editSubject"></select></div>
+    <div class="field"><label>Class</label>
+      <select id="editClass"></select>
+    </div>
+    <div class="field"><label>Title</label><input type="text" id="editTitle"></div>
+    <div class="field" id="editDescWrap" style="display:none;"><label>Description</label><input type="text" id="editDesc"></div>
+    <div class="field" id="editUrlWrap" style="display:none;"><label>Link/URL</label><input type="text" id="editUrl"></div>
+    <div style="display:flex; gap:10px; margin-top:10px;">
+      <button class="btn btn-primary" onclick="saveEdit()">Save changes</button>
+      <button class="btn btn-ghost" onclick="closeEditModal()">Cancel</button>
+    </div>
+    <span id="editMsg" style="display:block; margin-top:8px; font-weight:700; font-size:13px;"></span>
+  </div>
+</div>
+
+<script src="js/admin-dashboard.js"></script>
+</body>
+</html>

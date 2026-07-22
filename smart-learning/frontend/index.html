@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Learning — Learning Platform for Kids</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .hero{position:relative; padding:88px 0 60px; overflow:hidden;}
+  .hero .blob-a{width:340px;height:340px; background:var(--yellow); top:-120px; right:-80px; opacity:.55;}
+  .hero .blob-b{width:260px;height:260px; background:var(--violet); bottom:-100px; left:-100px; opacity:.35;}
+  .hero-grid{position:relative; z-index:1; display:grid; grid-template-columns:1.05fr 0.95fr; gap:56px; align-items:center;}
+  @media(max-width:900px){ .hero-grid{grid-template-columns:1fr;} }
+  .eyebrow{display:inline-flex; align-items:center; gap:8px; background:white; border:2px solid var(--line); padding:7px 16px 7px 8px; border-radius:999px; font-weight:800; font-size:13px; color:var(--ink-soft); margin-bottom:22px;}
+  .eyebrow .dot{width:22px;height:22px;border-radius:50%;background:var(--coral); display:flex;align-items:center;justify-content:center; font-size:12px;}
+  .hero h1{font-size:56px; line-height:1.04; margin-bottom:20px;}
+  .hero h1 .u1{color:var(--sky);} .hero h1 .u2{color:var(--coral);}
+  @media(max-width:640px){ .hero h1{font-size:38px;} }
+  .hero p.lede{font-size:18px; color:var(--ink-soft); max-width:480px; line-height:1.6; margin-bottom:30px;}
+  .hero-ctas{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:34px;}
+  .hero-note{display:flex; gap:22px; flex-wrap:wrap; font-size:13px; font-weight:700; color:var(--ink-soft);}
+  .path-card{background:white; border-radius:28px; border:2px solid var(--line); padding:26px 22px 30px; box-shadow:0 20px 44px rgba(43,39,80,0.10); position:relative;}
+  .path-card h3{font-size:14px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); font-family:'Nunito'; font-weight:800; margin-bottom:18px;}
+  .trail-svg{width:100%; height:auto; display:block;}
+
+  section{padding:78px 0;}
+  .sec-head{max-width:620px; margin-bottom:48px;}
+  .sec-head h2{font-size:36px; line-height:1.15; margin-bottom:14px;}
+  .sec-head p{color:var(--ink-soft); font-size:16px; line-height:1.6;}
+
+  .subjects-band{background:var(--ink); color:var(--paper); position:relative;}
+  .subjects-band .sec-tag{color:var(--yellow);}
+  .subjects-band .sec-head p{color:#C9C4E8;}
+  .stop-row{position:relative;}
+  .stop-line{position:absolute; top:60px; left:0; right:0; height:3px; background: repeating-linear-gradient(90deg, #4A4570 0 14px, transparent 14px 26px); z-index:0;}
+  .stops{display:grid; grid-template-columns:repeat(4,1fr); gap:24px; position:relative; z-index:1;}
+  @media(max-width:900px){ .stops{grid-template-columns:1fr 1fr;} .stop-line{display:none;} }
+  @media(max-width:520px){ .stops{grid-template-columns:1fr;} }
+  .stop{background:#332E5C; border-radius:20px; padding:26px 20px; text-align:left; border:2px solid rgba(255,255,255,0.06); transition:transform .2s ease, border-color .2s ease;}
+  .stop:hover{transform:translateY(-6px); border-color:rgba(255,255,255,0.25);}
+  .stop-num{width:44px;height:44px;border-radius:14px; display:flex;align-items:center;justify-content:center; font-family:'Fredoka'; font-weight:700; font-size:19px; color:#201C42; margin-bottom:18px;}
+  .stop h3{font-family:'Fredoka'; font-size:19px; margin-bottom:8px; color:white;}
+  .stop p{font-size:13.5px; color:#B9B4DE; line-height:1.55;}
+  .s1{background:var(--sky);} .s2{background:var(--yellow);} .s3{background:var(--leaf); color:#0F2A1D;} .s4{background:var(--violet); color:#20123F;}
+
+  .split{display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;}
+  @media(max-width:900px){ .split{grid-template-columns:1fr;} }
+  .split.reverse .art{order:1;}
+  @media(max-width:900px){ .split.reverse .art{order:0;} }
+  .mock{background:white; border-radius:24px; border:2px solid var(--line); box-shadow:0 24px 50px rgba(43,39,80,0.09); padding:20px;}
+  .mock-topbar{display:flex; align-items:center; gap:8px; margin-bottom:16px;}
+  .mock-topbar .chip{width:10px;height:10px;border-radius:50%;}
+  .mock-title{font-family:'Fredoka'; font-weight:600; font-size:15px; margin-left:6px; color:var(--ink-soft);}
+  .mock-hero{background:linear-gradient(135deg, var(--sky), #7FDDE8); border-radius:18px; padding:20px; color:white; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between;}
+  .mock-hero .avatar{width:52px;height:52px;border-radius:16px;background:rgba(255,255,255,0.25); display:flex;align-items:center;justify-content:center; font-family:'Fredoka'; font-size:22px;}
+  .mock-hero h4{font-family:'Fredoka'; font-size:17px; margin-bottom:3px;}
+  .mock-hero p{font-size:12.5px; opacity:.9;}
+  .mock-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:16px;}
+  .mock-sub{border-radius:14px; padding:14px 10px; text-align:center; font-family:'Fredoka'; font-weight:600; font-size:12.5px; border:2px solid var(--line);}
+  .mock-sub .ic{font-size:22px; margin-bottom:6px;}
+  .mock-progress-row{display:flex; align-items:center; gap:12px; padding:12px 4px; border-top:1px solid var(--line);}
+  .mock-progress-row:first-of-type{border-top:none;}
+  .mock-progress-row .lbl{font-size:13px; font-weight:800; width:110px; flex-shrink:0;}
+  .mock-progress-row .pct{font-size:12px; font-weight:800; color:var(--ink-soft); width:36px; text-align:right;}
+
+  .feature-list{display:flex; flex-direction:column; gap:18px;}
+  .feature-list li{display:flex; gap:14px; align-items:flex-start;}
+  .feature-ic{width:38px;height:38px;border-radius:12px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:17px; background:var(--paper-soft); border:2px solid var(--line);}
+  .feature-list h4{font-family:'Fredoka'; font-size:16.5px; margin-bottom:3px;}
+  .feature-list p{font-size:14px; color:var(--ink-soft); line-height:1.55;}
+
+  .parent-band{background:var(--paper-soft);}
+  .report-mock{background:white; border-radius:24px; border:2px solid var(--line); padding:22px; box-shadow:0 24px 50px rgba(43,39,80,0.09);}
+  .report-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;}
+  .report-head h4{font-family:'Fredoka'; font-size:16px;}
+  .seg{display:flex; background:var(--paper-soft); border-radius:999px; padding:3px; font-size:12px; font-weight:800;}
+  .seg span{padding:6px 12px; border-radius:999px; color:var(--ink-soft);}
+  .seg span.active{background:var(--ink); color:white;}
+  .chart-row{display:flex; align-items:flex-end; gap:10px; height:120px; margin-bottom:18px; padding:0 4px;}
+  .chart-col{flex:1; border-radius:8px 8px 4px 4px; position:relative;}
+  .chart-col span{position:absolute; bottom:-20px; left:0; right:0; text-align:center; font-size:10.5px; font-weight:800; color:var(--ink-soft);}
+  .notif{display:flex; gap:12px; align-items:center; padding:11px 12px; border-radius:14px; background:var(--paper); border:1px solid var(--line); margin-top:20px;}
+  .notif .dotc{width:8px;height:8px;border-radius:50%; background:var(--coral); flex-shrink:0;}
+  .notif p{font-size:13px; font-weight:700;}
+  .notif span{font-size:11.5px; color:var(--ink-soft); font-weight:600;}
+
+  .steps{display:grid; grid-template-columns:repeat(4,1fr); gap:22px;}
+  @media(max-width:900px){ .steps{grid-template-columns:1fr 1fr;} }
+  @media(max-width:520px){ .steps{grid-template-columns:1fr;} }
+  .step-card{background:white; border:2px solid var(--line); border-radius:20px; padding:24px 20px;}
+  .step-mark{font-family:'Fredoka'; font-weight:700; font-size:13px; color:var(--ink-soft); margin-bottom:14px;}
+  .step-card h3{font-size:17px; margin-bottom:8px;}
+  .step-card p{font-size:13.5px; color:var(--ink-soft); line-height:1.55;}
+
+  .safety-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+  @media(max-width:820px){ .safety-grid{grid-template-columns:1fr;} }
+  .safety-card{border:2px solid var(--line); border-radius:20px; padding:24px; background:var(--paper);}
+  .safety-card .ic{font-size:24px; margin-bottom:12px;}
+  .safety-card h4{font-family:'Fredoka'; font-size:16px; margin-bottom:6px;}
+  .safety-card p{font-size:13.5px; color:var(--ink-soft); line-height:1.55;}
+
+  .cta-band{background:linear-gradient(135deg, #2B2750, #443C7A); border-radius:32px; padding:56px 44px; color:white; text-align:center; margin:0 32px; position:relative; overflow:hidden;}
+  .cta-band h2{font-size:32px; margin-bottom:12px;}
+  .cta-band p{color:#C9C4E8; margin-bottom:28px; font-size:16px;}
+  .cta-band .btn-primary{background:var(--yellow); color:#2B2750; box-shadow:0 6px 0 #C99A1E;}
+  .cta-band .btn-primary:active{box-shadow:0 3px 0 #C99A1E;}
+  .cta-row{display:flex; gap:14px; justify-content:center; flex-wrap:wrap;}
+
+  .reveal{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <nav class="site-nav">
+      <a class="logo" href="index.html"><div class="logo-mark">✺</div>Smart Learning</a>
+      <div class="nav-links">
+        <a href="index.html" class="active">Home</a>
+        <a href="index.html#subjects">Subjects</a>
+        <a href="student-dashboard.html">Students</a>
+        <a href="parent-dashboard.html">Parents</a>
+        <a href="admin-dashboard.html">Admin</a>
+      </div>
+      <div class="nav-ctas">
+        <a class="btn btn-ghost btn-sm" href="login.html">Log in</a>
+        <a class="btn btn-primary btn-sm" href="register.html">Sign up</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="blob blob-a"></div>
+  <div class="blob blob-b"></div>
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow"><span class="dot">★</span> Built for Class 1 – 5, ages 6–11</div>
+      <h1>Where learning<br>feels like <span class="u1">play</span>,<br>and progress is <span class="u2">seen</span>.</h1>
+      <p class="lede">One safe, colourful home for English, Maths, EVS and Basic Computer Knowledge — with lessons kids want to finish and reports parents actually read.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="register.html">Begin today's lesson</a>
+        <a class="btn btn-ghost" href="#parents">See a parent report</a>
+      </div>
+      <div class="hero-note">
+        <span>🔒 Role-based secure login</span>
+        <span>📶 Works on phone, tablet & web</span>
+        <span>🕹️ 4 subjects, one trail</span>
+      </div>
+    </div>
+
+    <div class="hero-art">
+      <div class="path-card">
+        <h3>Today's Learning Trail</h3>
+        <svg class="trail-svg" viewBox="0 0 420 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M30 250 C 90 250, 90 190, 150 190 S 210 130, 270 130 S 330 70, 390 70" stroke="#E7E1D0" stroke-width="6" stroke-linecap="round" stroke-dasharray="1 16"/>
+          <circle cx="30" cy="250" r="26" fill="#3FBEE8"/>
+          <text x="30" y="256" text-anchor="middle" font-family="Fredoka" font-size="20" fill="white">A</text>
+          <circle cx="150" cy="190" r="26" fill="#FFC93C"/>
+          <text x="150" y="196" text-anchor="middle" font-family="Fredoka" font-size="18" fill="#2B2750">+</text>
+          <circle cx="270" cy="130" r="26" fill="#3FAE7A"/>
+          <text x="270" y="137" text-anchor="middle" font-family="Fredoka" font-size="16" fill="white">EVS</text>
+          <circle cx="390" cy="70" r="26" fill="#9B7BFF"/>
+          <text x="390" y="76" text-anchor="middle" font-family="Fredoka" font-size="16" fill="white">💻</text>
+          <circle cx="30" cy="250" r="34" fill="none" stroke="#3FBEE8" stroke-width="2" stroke-dasharray="3 5"/>
+        </svg>
+        <div style="display:flex; justify-content:space-between; margin-top:6px; font-size:11.5px; font-weight:800; color:var(--ink-soft);">
+          <span>English<br>done</span><span>Maths<br>2 left</span><span>EVS<br>locked</span><span>Computer<br>locked</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="subjects" class="subjects-band">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag">The four stops</div>
+      <h2>Every child's trail runs<br>through the same four subjects.</h2>
+      <p>No overwhelming catalogue — just a focused, age-appropriate path that repeats and deepens from Class 1 to Class 5.</p>
+    </div>
+    <div class="stop-row">
+      <div class="stop-line"></div>
+      <div class="stops">
+        <div class="stop"><div class="stop-num s1">Aa</div><h3>English</h3><p>Reading, phonics, spelling and story comprehension through animated lessons.</p></div>
+        <div class="stop"><div class="stop-num s2">+−</div><h3>Mathematics</h3><p>Number sense, tables and problem-solving with instant-feedback quizzes.</p></div>
+        <div class="stop"><div class="stop-num s3">🌱</div><h3>EVS</h3><p>Environmental Studies — nature, community and everyday science.</p></div>
+        <div class="stop"><div class="stop-num s4">💻</div><h3>Basic Computer<br>Knowledge</h3><p>Screen-safe basics: parts of a computer, typing and simple digital skills.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="student">
+  <div class="wrap split">
+    <div class="art mock reveal">
+      <div class="mock-topbar">
+        <span class="chip" style="background:var(--coral)"></span>
+        <span class="chip" style="background:var(--yellow)"></span>
+        <span class="chip" style="background:var(--leaf)"></span>
+        <span class="mock-title">Student Dashboard — Aarav, Class 3</span>
+      </div>
+      <div class="mock-hero">
+        <div><h4>Good morning, Aarav! ☀️</h4><p>Daily goal: 2 of 3 lessons complete</p></div>
+        <div class="avatar">🦊</div>
+      </div>
+      <div class="mock-grid">
+        <div class="mock-sub" style="background:#EAF8FD;"><div class="ic">📖</div>English</div>
+        <div class="mock-sub" style="background:#FFF6DE;"><div class="ic">➗</div>Maths</div>
+        <div class="mock-sub" style="background:#E9F8F0;"><div class="ic">🌍</div>EVS</div>
+        <div class="mock-sub" style="background:#F2ECFF;"><div class="ic">💻</div>Computer</div>
+      </div>
+      <div>
+        <div class="mock-progress-row"><span class="lbl">English</span><div class="bar-track"><div class="bar-fill" style="width:90%; background:var(--sky);"></div></div><span class="pct">90%</span></div>
+        <div class="mock-progress-row"><span class="lbl">Mathematics</span><div class="bar-track"><div class="bar-fill" style="width:65%; background:var(--yellow);"></div></div><span class="pct">65%</span></div>
+        <div class="mock-progress-row"><span class="lbl">EVS</span><div class="bar-track"><div class="bar-fill" style="width:40%; background:var(--leaf);"></div></div><span class="pct">40%</span></div>
+      </div>
+      <a href="student-dashboard.html" class="btn btn-ghost btn-sm" style="margin-top:16px;">Open full dashboard →</a>
+    </div>
+    <div class="reveal">
+      <div class="sec-tag">Student module</div>
+      <h2 style="font-size:32px; margin-bottom:16px;">A dashboard sized for<br>small hands and short attention spans.</h2>
+      <ul class="feature-list">
+        <li><div class="feature-ic">🎬</div><div><h4>Animated lessons & videos</h4><p>Short, visual lessons that explain one idea at a time.</p></div></li>
+        <li><div class="feature-ic">📝</div><div><h4>Practice quizzes after every lesson</h4><p>Quick checks that turn into scores parents can see later.</p></div></li>
+        <li><div class="feature-ic">🎯</div><div><h4>Daily goal, not a leaderboard</h4><p>Progress is tracked against the child's own habit, not other kids.</p></div></li>
+        <li><div class="feature-ic">🧒</div><div><h4>Class 1–5 profile & class selection</h4><p>Content automatically matches the child's registered class.</p></div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="parents" class="parent-band">
+  <div class="wrap split reverse">
+    <div class="reveal">
+      <div class="sec-tag">Parent module</div>
+      <h2 style="font-size:32px; margin-bottom:16px;">Everything a parent needs to ask<br>"how was learning today?" — answered.</h2>
+      <ul class="feature-list">
+        <li><div class="feature-ic">🔗</div><div><h4>Link one or more child accounts</h4><p>Every linked child's activity rolls up into a single dashboard.</p></div></li>
+        <li><div class="feature-ic">📊</div><div><h4>Daily, weekly & monthly reports</h4><p>Subject-wise progress, quiz results and time spent learning.</p></div></li>
+        <li><div class="feature-ic">🔔</div><div><h4>Notifications that matter</h4><p>New quiz scores, missed daily goals, or new lessons unlocked.</p></div></li>
+      </ul>
+      <a href="parent-dashboard.html" class="btn btn-ghost btn-sm" style="margin-top:18px;">Open full dashboard →</a>
+    </div>
+    <div class="art mock reveal report-mock">
+      <div class="report-head">
+        <h4>Aarav's Weekly Report</h4>
+        <div class="seg"><span class="active">Week</span><span>Month</span></div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-col" style="height:40%; background:#EAF8FD;"><span>Mon</span></div>
+        <div class="chart-col" style="height:65%; background:#EAF8FD;"><span>Tue</span></div>
+        <div class="chart-col" style="height:30%; background:#EAF8FD;"><span>Wed</span></div>
+        <div class="chart-col" style="height:85%; background:var(--sky);"><span>Thu</span></div>
+        <div class="chart-col" style="height:55%; background:#EAF8FD;"><span>Fri</span></div>
+        <div class="chart-col" style="height:70%; background:#EAF8FD;"><span>Sat</span></div>
+        <div class="chart-col" style="height:20%; background:#EAF8FD;"><span>Sun</span></div>
+      </div>
+      <div class="notif"><div class="dotc"></div><div><p>Quiz completed — Mathematics: Multiplication</p><span>Scored 8/10 · Today, 5:40 PM</span></div></div>
+      <div class="notif"><div class="dotc" style="background:var(--leaf)"></div><div><p>Daily goal reached 🎉</p><span>3 of 3 lessons · Yesterday</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag">How it works</div>
+      <h2>From sign-up to Sunday's report,<br>in four steps.</h2>
+    </div>
+    <div class="steps">
+      <div class="step-card"><div class="step-mark">01 · Parent</div><h3>Register & link</h3><p>Parent creates an account and links it to their child's profile using the child's details.</p></div>
+      <div class="step-card"><div class="step-mark">02 · Student</div><h3>Pick a class & subject</h3><p>Child logs in, selects their class, and picks a subject to start today's lesson.</p></div>
+      <div class="step-card"><div class="step-mark">03 · Student</div><h3>Learn, watch, quiz</h3><p>Animated lessons and videos are followed by a short practice quiz.</p></div>
+      <div class="step-card"><div class="step-mark">04 · Parent</div><h3>Review the report</h3><p>Scores and time-on-learning roll into daily, weekly and monthly reports.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="safety">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-tag">Built for trust</div>
+      <h2>Safe by default, for everyone who logs in.</h2>
+      <p>Security and reliability requirements that sit quietly behind every colourful screen.</p>
+    </div>
+    <div class="safety-grid">
+      <div class="safety-card"><div class="ic">🔐</div><h4>Encrypted, role-based access</h4><p>Students, parents and administrators each see only what belongs to their role.</p></div>
+      <div class="safety-card"><div class="ic">📡</div><h4>Secure HTTPS connection</h4><p>All communication between the app and the platform is encrypted in transit.</p></div>
+      <div class="safety-card"><div class="ic">💾</div><h4>Regular automatic backup</h4><p>Learning records and reports are backed up so progress is never lost.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="cta-band">
+    <div class="blob" style="width:280px;height:280px;background:var(--yellow);opacity:.18;top:-90px;left:-60px;"></div>
+    <h2>Ready to start today's lesson?</h2>
+    <p>Four subjects, one trail, and a report waiting for the grown-ups.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="register.html">Create a student account</a>
+      <a class="btn btn-ghost" href="register.html" style="border-color:white; color:white;">Create a parent account</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <a class="logo" href="index.html"><div class="logo-mark">✺</div>Smart Learning</a>
+      <div class="foot-links">
+        <div class="foot-col">
+          <h5>Platform</h5>
+          <a href="index.html#subjects">Subjects</a>
+          <a href="student-dashboard.html">Student dashboard</a>
+          <a href="parent-dashboard.html">Parent reports</a>
+          <a href="admin-dashboard.html">Admin console</a>
+        </div>
+        <div class="foot-col">
+          <h5>Access</h5>
+          <a href="login.html">Log in</a>
+          <a href="register.html">Create account</a>
+        </div>
+        <div class="foot-col">
+          <h5>Trust</h5>
+          <a href="index.html#safety">Security</a>
+          <a href="#">Privacy</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Smart Learning. A learning platform for Class 1–5.</span>
+      <span>Android · Windows · Web browser</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); } });
+  }, {threshold:0.15});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+
+</body>
+</html>
