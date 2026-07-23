@@ -258,6 +258,7 @@ async function loadStudents(){
 
 function renderStudents(){
   const activeClass = document.querySelector('#classFilterTabs button.active')?.dataset.class || 'all';
+  document.getElementById('studentCountLabel').textContent = '(${ALL_STUDENTS.length} total)';
   const q = (document.getElementById('studentSearch').value || '').toLowerCase();
   const rows = ALL_STUDENTS.filter(s =>
     (activeClass === 'all' || s.class === activeClass) &&
