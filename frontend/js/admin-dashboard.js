@@ -476,7 +476,7 @@ async function loadQuizzesList(){
 
 function renderQuizzesList(){
   const tbody = document.getElementById('quizzesListBody');
-  if (!ALL_QUIZZES.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No quizzes created yet.</td></tr>'; return; }
+  if (!ALL_QUIZZES.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No quizzes created yet.</td></tr>'; return;ocument.getElementById('quizCountLabel').textContent = `(${ALL_QUIZZES.length} total)`; }
   tbody.innerHTML = ALL_QUIZZES.map(q => `
     <tr>
       <td>${q.title}</td>
