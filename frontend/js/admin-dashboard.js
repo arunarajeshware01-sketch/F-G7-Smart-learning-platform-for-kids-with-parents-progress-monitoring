@@ -319,7 +319,8 @@ function renderParents(){
   const q = (document.getElementById('parentSearch').value || '').toLowerCase();
   const rows = ALL_PARENTS.filter(p => p.name.toLowerCase().includes(q) || p.email.toLowerCase().includes(q));
   const tbody = document.getElementById('parentsBody');
-  if (!rows.length) { tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No parents found.</td></tr>`; return; }
+  if (!rows.length) { tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No parents found.</td></tr>`; return; 
+    document.getElementById('parentCountLabel').textContent = `(${ ALL_PARENTS.length } total)`;}
   tbody.innerHTML = rows.map(p => `
     <tr>
       <td><div class="row-name"><div class="row-avatar" style="background:#F2ECFF;">👪</div>${p.name}</div></td>
