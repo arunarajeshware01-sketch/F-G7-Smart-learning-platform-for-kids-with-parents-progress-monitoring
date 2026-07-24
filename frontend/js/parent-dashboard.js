@@ -3,7 +3,22 @@ let SELECTED_CHILD = null;
 let ACTIVITY_RANGE = 'week';
 
 (async function(){
-  const session = await guardPage('parent');
+  let session;
+  try {
+    session = await guardPage('parent');
+  } catch (err) {
+    console.error('Could not reach the backend:', err);
+    document.body.innerHTML = `
+      <div style="padding:60px; font-family:sans-serif; max-width:600px; margin:0 auto;">
+        <h2 style="color:#a30000;">Could not connect to the server</h2>
+        <p style="margin-top:12px; line-height:1.6;">
+          This usually means: XAMPP's Apache or MySQL isn't running, the
+          database hasn't been imported yet, or the project folder isn't at
+          <code>htdocs/smart-learning/</code>. Check those, then refresh this page.
+        </p>
+      </div>`;
+    return;
+  }
   if (!session) return;
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -20,8 +35,21 @@ let ACTIVITY_RANGE = 'week';
 })();
 
 async function loadDashboard(){
-  const res = await apiGet('parent/dashboard.php');
-  if (!res.success) { document.getElementById('childSwitch').textContent = res.message; return; }
+  let res;
+  try {
+    res = await apiGet('parent/dashboard.php');
+  } catch (err) {
+    console.error('Failed to load parent dashboard:', err);
+    document.getElementById('childSwitch').innerHTML =
+      '<p style="color:#a30000; font-weight:700;">Could not connect to the server. Check that Apache and MySQL are running in XAMPP, and that the database has been imported.</p>';
+    return;
+  }
+
+  if (!res || !res.success) {
+    document.getElementById('childSwitch').innerHTML =
+      `<p style="color:#a30000; font-weight:700;">${res ? res.message : 'Unknown error loading dashboard.'}</p>`;
+    return;
+  }
 
   CHILDREN = res.children;
   document.getElementById('familySub').textContent =
@@ -102,7 +130,7 @@ function renderSelectedChild(){
     const pct = q.total_questions ? Math.round((q.score / q.total_questions) * 100) : 0;
     const cls = pct >= 80 ? 'badge-green' : (pct >= 50 ? 'badge-yellow' : 'badge-red');
     const date = new Date(q.attempted_at).toLocaleDateString('en-GB', { day:'2-digit', month:'short' });
-    return `<tr><td>${q.quiz_title}</td><td>—</td><td>${date}</td><td><span class="badge ${cls}">${q.score} / ${q.total_questions}</span></td></tr>`;
+    return `<tr><td>${q.quiz_title}</td><td>${q.subject_name}</td><td>${date}</td><td><span class="badge ${cls}">${q.score} / ${q.total_questions}</span></td></tr>`;
   }).join('') : '<tr><td colspan="4" style="text-align:center;">No quizzes attempted yet.</td></tr>';
 }
 
