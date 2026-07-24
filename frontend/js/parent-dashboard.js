@@ -3,7 +3,22 @@ let SELECTED_CHILD = null;
 let ACTIVITY_RANGE = 'week';
 
 (async function(){
-  const session = await guardPage('parent');
+  let session;
+  try {
+    session = await guardPage('parent');
+  } catch (err) {
+    console.error('Could not reach the backend:', err);
+    document.body.innerHTML = `
+      <div style="padding:60px; font-family:sans-serif; max-width:600px; margin:0 auto;">
+        <h2 style="color:#a30000;">Could not connect to the server</h2>
+        <p style="margin-top:12px; line-height:1.6;">
+          This usually means: XAMPP's Apache or MySQL isn't running, the
+          database hasn't been imported yet, or the project folder isn't at
+          <code>htdocs/smart-learning/</code>. Check those, then refresh this page.
+        </p>
+      </div>`;
+    return;
+  }
   if (!session) return;
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -123,7 +138,7 @@ function setActivityRange(range){
   loadActivityChart();
 }
 
-async function loadActivityChart(){
+async function loadActivityChart(){c
   const row = document.getElementById('activityChartRow');
   if (!SELECTED_CHILD) return;
 
