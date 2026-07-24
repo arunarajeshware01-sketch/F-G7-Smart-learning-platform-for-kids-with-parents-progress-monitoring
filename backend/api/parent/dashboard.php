@@ -18,12 +18,12 @@ foreach ($children as &$child) {
     $child['subject_progress'] = $prog->fetchAll();
 
     $quiz = $pdo->prepare(
-        "SELECT qr.score, qr.total_questions, qr.attempted_at, q.title AS quiz_title, s.name AS subject_name
-         FROM quiz_results qr
-         JOIN quizzes q ON q.id = qr.quiz_id
-         JOIN subjects s ON s.id = q.subject_id
-         WHERE qr.student_id = ? ORDER BY qr.attempted_at DESC LIMIT 10"
-    );
+    "SELECT qr.score, qr.total_questions, qr.attempted_at, q.title AS quiz_title, s.name AS subject_name
+     FROM quiz_results qr
+     JOIN quizzes q ON q.id = qr.quiz_id
+     JOIN subjects s ON s.id = q.subject_id
+     WHERE qr.student_id = ? ORDER BY qr.attempted_at DESC LIMIT 10"
+);
     $quiz->execute([$child['id']]);
     $child['quiz_results'] = $quiz->fetchAll();
 }
