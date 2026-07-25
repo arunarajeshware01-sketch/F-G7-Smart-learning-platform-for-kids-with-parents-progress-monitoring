@@ -117,7 +117,7 @@ function renderSelectedChild(){
     const pct = q.total_questions ? Math.round((q.score / q.total_questions) * 100) : 0;
     const cls = pct >= 80 ? 'badge-green' : (pct >= 50 ? 'badge-yellow' : 'badge-red');
     const date = new Date(q.attempted_at).toLocaleDateString('en-GB', { day:'2-digit', month:'short' });
-   return <tr><td>${q.quiz_title}</td><td>${q.subject_name}</td><td>${date}</td><td><span class="badge ${cls}">${q.score} / ${q.total_questions}</span></td></tr>; 
+   return `<tr><td>${q.quiz_title}</td><td>${q.subject_name}</td><td>${date}</td><td><span class="badge ${cls}">${q.score} / ${q.total_questions}</span></td></tr>`; 
   }).join('') : '<tr><td colspan="4" style="text-align:center;">No quizzes attempted yet.</td></tr>';
 }
 
@@ -138,7 +138,7 @@ function setActivityRange(range){
   loadActivityChart();
 }
 
-async function loadActivityChart(){c
+async function loadActivityChart(){
   const row = document.getElementById('activityChartRow');
   if (!SELECTED_CHILD) return;
 
