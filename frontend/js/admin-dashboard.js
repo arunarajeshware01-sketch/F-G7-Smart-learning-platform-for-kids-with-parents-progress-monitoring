@@ -258,7 +258,8 @@ async function loadStudents(){
 
 function renderStudents(){
   const activeClass = document.querySelector('#classFilterTabs button.active')?.dataset.class || 'all';
-  document.getElementById('studentCountLabel').textContent = '(${ALL_STUDENTS.length} total)';
+  document.getElementById('studentCountLabel').textContent = `(${ALL_STUDENTS.length} total)`;
+
   const q = (document.getElementById('studentSearch').value || '').toLowerCase();
   const rows = ALL_STUDENTS.filter(s =>
     (activeClass === 'all' || s.class === activeClass) &&
@@ -319,8 +320,8 @@ function renderParents(){
   const q = (document.getElementById('parentSearch').value || '').toLowerCase();
   const rows = ALL_PARENTS.filter(p => p.name.toLowerCase().includes(q) || p.email.toLowerCase().includes(q));
   const tbody = document.getElementById('parentsBody');
-  if (!rows.length) { tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No parents found.</td></tr>`; return; 
-    document.getElementById('parentCountLabel').textContent = `(${ ALL_PARENTS.length } total)`;}
+  document.getElementById('parentCountLabel').textContent = `(${ALL_PARENTS.length} total)`;
+  if (!rows.length) { tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No parents found.</td></tr>`; return; }
   tbody.innerHTML = rows.map(p => `
     <tr>
       <td><div class="row-name"><div class="row-avatar" style="background:#F2ECFF;">👪</div>${p.name}</div></td>
